@@ -1,5 +1,12 @@
-.gallery-list{
-display: flex;
-flex-wrap: wrap;
-
+.gallery-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 100px;
+}
+/* 
+.search-form {
+  position: fixed;
+} */
+.under-layer {
+  position: fixed;
 }

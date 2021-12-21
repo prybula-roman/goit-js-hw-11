@@ -1,47 +1,38 @@
 const axios = require("axios");
-import { galleryItems } from "./img/galery";
 import Notiflix from "notiflix";
-// import  templ  from "./templates/markup.hbs";
 import SimpleLightbox from "simplelightbox";
-// Дополнительный импорт стилей
 import "simplelightbox/dist/simple-lightbox.min.css";
-//import simpleLightbox from "simplelightbox";
 
 const input = document.querySelector(".input");
 const btn = document.querySelector(".btn");
 const list = document.querySelector(".gallery-list");
-var lightbox = new SimpleLightbox('.gallery .list-item .refs');
+var lightbox = new SimpleLightbox(".gallery .list-item .refs");
 
-let rezView="";
+let rezView = "";
 
-
-let count_click=0;
+let count_click = 0;
 
 const opt = {
   key: "24814547-7669f4452a14656066293be0d",
   q: "",
-
-   per_page: 10,
-    page: 1,
+  per_page: 40,
+  page: 1,
 };
 
 btn.addEventListener("click", () => {
- 
-  if(opt.q.trim()!=input.value.trim()){
+  if (opt.q.trim() != input.value.trim() && input.value != "") {
+    rezView = "";
+    opt.q = input.value;
+    opt.page = 1;
+    list.innerHTML = "";
+  }
 
-        rezView="";
-        opt.q = input.value;
-        opt.page=1;    
-       }
-
-if(opt.q.trim()===input.value.trim()){
+  if (opt.q.trim() === input.value.trim()) {
     opt.page++;
-
-       }
-       
-       const searchParams = new URLSearchParams(opt);
-  //console.log("searchParams.toString=  ", searchParams.toString());
+  }
+  const searchParams = new URLSearchParams(opt);
   baseUrl = `https://pixabay.com/api/?${searchParams.toString()}`;
+
   console.log("********", input.value);
   console.log("baseUrl=", baseUrl);
 
@@ -49,50 +40,33 @@ if(opt.q.trim()===input.value.trim()){
     .then((resp) => resp.json())
     .then((data) => {
       const markup = data.hits;
-      console.log("markup=",markup);
+      console.log("markup=", markup);
 
-      rezView+= markup.map((elem) => `<li class="list-item"><a rel=\"lightbox\" class="refs" href=\"${elem.largeImageURL}\"><img src=\"${elem.previewURL}\"></li>`)
-      .join("");
-      console.log("rezView=",rezView);
-      list.innerHTML = rezView;
+      rezView = markup
+        .map(
+          (elem) =>
+            `<li class="list-item">
+              <a rel=\"lightbox\" class="refs" href=\"${elem.largeImageURL}\">
+                <img width=\"80\" height="50" border=\"0\" loading=\"lazy\" src=\"${elem.previewURL}\">
+              </a>
+            </li>`
+        )
+        .join("");
 
-      //var lightbox = new SimpleLightbox('.gallery .list-item .refs');
-      var lightbox = new SimpleLightbox('.gallery  .refs');
-console.dir(btn)
+      //  console.log("rezView=", rezView);
+      //list.innerHTML = rezView;
+      list.insertAdjacentHTML("beforeend", rezView);
+      new SimpleLightbox(".gallery .list-item .refs");
 
-
-//======================================
-
-
-// let gallery = new SimpleLightbox('.gallery-list a');
-// gallery.on('show.simplelightbox', function () {
-// 	console.log("e.target=" ,e.target)
-// });
-
-//======================================
-      list.addEventListener("click",(e)=>{
-        
-
-        console.log("e.target=" ,e.target)
-      })
-      //   SimpleLightbox.open({
-      //     // items: ['demo/images/1big.jpg', 'demo/images/2big.jpg', 'demo/images/3big.jpg']
-      // });
+      list.addEventListener("click", (e) => {
+        console.log("e.target=", e.target);
+      });
     })
-    .catch(() => {
-      console.log("the END of query");
-    });
+    .catch((error) => console.log(error));
 });
-//==================================================
 
-// const list = document.querySelector(".gallery-list");
-
-// const markup = galleryItems
-//   .map((elem) => `<li class="list-item"><img src=\"${elem.preview}\"></li>`)
-//   .join("");
-
-// console.log("markup", markup);
-// list.innerHTML = markup;
-//===================================================
-
-
+console.log("window=", window);
+window.addEventListener("scroll", function (e) {
+  last_known_scroll_position = window.scrollY;
+  console.log("last_known_scroll_position=", last_known_scroll_position);
+});
