@@ -15,22 +15,37 @@ let count_click = 0;
 const opt = {
   key: "24814547-7669f4452a14656066293be0d",
   q: "",
-  per_page: 40,
+  per_page: 12,
   page: 1,
 };
 
+console.log("opt.per_page=",opt.per_page);
+
+console.log(list);
+list.addEventListener('scroll', function() {
+
+  if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
+    loadMore();
+  }
+});
+
+
 btn.addEventListener("click", () => {
+  console.log("opt.per_page=",opt.per_page)
   if (opt.q.trim() != input.value.trim() && input.value != "") {
     rezView = "";
     opt.q = input.value;
     opt.page = 1;
-    list.innerHTML = "";
+    list.innerHTML = rezView;
   }
 
   if (opt.q.trim() === input.value.trim()) {
     opt.page++;
   }
+
+  
   const searchParams = new URLSearchParams(opt);
+  console.log("searchParams.toString()",searchParams.toString());
   baseUrl = `https://pixabay.com/api/?${searchParams.toString()}`;
 
   console.log("********", input.value);
@@ -41,7 +56,6 @@ btn.addEventListener("click", () => {
     .then((data) => {
       const markup = data.hits;
       console.log("markup=", markup);
-
       rezView = markup
         .map(
           (elem) =>
@@ -65,8 +79,8 @@ btn.addEventListener("click", () => {
     .catch((error) => console.log(error));
 });
 
-console.log("window=", window);
-window.addEventListener("scroll", function (e) {
-  last_known_scroll_position = window.scrollY;
-  console.log("last_known_scroll_position=", last_known_scroll_position);
-});
+// console.log("window=", window);
+// window.addEventListener("scroll", function (e) {
+//   last_known_scroll_position = window.scrollY;
+//   console.log("last_known_scroll_position=", last_known_scroll_position);
+// });

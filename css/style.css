@@ -2,6 +2,17 @@
   display: flex;
   flex-wrap: wrap;
   padding-top: 100px;
+
+/*  */
+  width: 200px;
+  height: 300px;
+  overflow: auto;
+
+  /* Optional, only to check that it works with margin/padding */
+  
+  /* margin: 30px; */
+  border: 10px solid black;
+
 }
 /* 
 .search-form {
