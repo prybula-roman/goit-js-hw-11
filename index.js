@@ -22,7 +22,12 @@ const opt = {
 console.log("opt.per_page=",opt.per_page);
 
 console.log(list);
-list.addEventListener('scroll', function() {
+list.addEventListener('scroll', ()=> {
+
+console.log("**********************************");
+  console.log("list.scrollTop",list.scrollTop);
+  console.log("list.clientHeight",list.clientHeight);
+  console.log("list.scrollHeight",list.scrollHeight);
 
   if (list.scrollTop + list.clientHeight >= list.scrollHeight) {
     loadMore();
@@ -40,6 +45,7 @@ btn.addEventListener("click", () => {
   }
 
   if (opt.q.trim() === input.value.trim()) {
+    console.log("if (opt.q.trim() === input.value.trim())");
     opt.page++;
   }
 
@@ -55,7 +61,7 @@ btn.addEventListener("click", () => {
     .then((resp) => resp.json())
     .then((data) => {
       const markup = data.hits;
-      console.log("markup=", markup);
+      console.log("markup===>", markup);
       rezView = markup
         .map(
           (elem) =>
@@ -76,7 +82,7 @@ btn.addEventListener("click", () => {
         console.log("e.target=", e.target);
       });
     })
-    .catch((error) => console.log(error));
+    .catch((error) => console.log("########",error));
 });
 
 // console.log("window=", window);
